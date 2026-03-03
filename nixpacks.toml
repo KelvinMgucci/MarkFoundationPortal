@@ -16,25 +16,8 @@ nixPkgs = [
 
 [phases.build]
 cmds = [
-  "composer install --no-dev --optimize-autoloader --no-interaction",
-  "php artisan config:cache",
-  "php artisan route:cache",
-  "php artisan view:cache"
+  "composer install --no-dev --optimize-autoloader --no-interaction"
 ]
 
 [start]
-cmd = "php artisan migrate --force && php artisan storage:link && php -S 0.0.0.0:$PORT -t public"
-```
-
----
-
-**File 2: `Procfile`** (one line)
-```
-web: php artisan migrate --force && php artisan storage:link && php -S 0.0.0.0:$PORT -t public
-```
-
----
-
-**File 3: `.gitignore`** — open your existing one and make sure this line is **commented out or removed**:
-```
-# /database/*.sqlite    ← add the # so the file gets committed to git
+cmd = "php artisan config:cache && php artisan migrate --force && php artisan storage:link && php -S 0.0.0.0:$PORT -t public"
