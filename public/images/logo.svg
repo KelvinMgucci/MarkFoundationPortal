@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#1a1a1a" rx="16"/>
+  <rect x="10" y="10" width="180" height="180" rx="12" fill="none" stroke="#2d7a3a" stroke-width="2" stroke-dasharray="8 4"/>
+  <circle cx="100" cy="80" r="28" fill="none" stroke="#2d7a3a" stroke-width="2"/>
+  <path d="M72 80 Q100 50 128 80" fill="none" stroke="#f5c800" stroke-width="2"/>
+  <rect x="60" y="115" width="80" height="8" rx="4" fill="#2d7a3a" opacity="0.6"/>
+  <rect x="75" y="130" width="50" height="6" rx="3" fill="#2d7a3a" opacity="0.4"/>
+  <text x="100" y="165" font-family="Arial, sans-serif" font-size="9" fill="#888" text-anchor="middle">YOUR LOGO HERE</text>
+  <text x="100" y="177" font-family="Arial, sans-serif" font-size="8" fill="#555" text-anchor="middle">Replace public/images/logo.svg</text>
+</svg>
