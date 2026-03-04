@@ -169,6 +169,23 @@
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
             Job Postings
         </a>
+        <p class="sidebar__section">Website Content</p>
+        <a href="{{ route('admin.team.index') }}" class="sidebar__link {{ request()->routeIs('admin.team.*') ? 'active' : '' }}">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Team Members
+        </a>
+        <a href="{{ route('admin.testimonials.index') }}" class="sidebar__link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Testimonials
+        </a>
+        <a href="{{ route('admin.faqs.index') }}" class="sidebar__link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+            FAQs
+        </a>
+        <a href="{{ route('admin.stats.index') }}" class="sidebar__link {{ request()->routeIs('admin.stats.*') ? 'active' : '' }}">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Impact Stats
+        </a>
     </nav>
     <div class="sidebar__footer">
         <div class="sidebar__user">

@@ -1,0 +1,1 @@
+Auth::guard('recruiter')-, 'password' = ? 'LOGIN OK' : 'LOGIN FAILED';echo Auth::guard('recruiter')-, 'password' = ? 'LOGIN OK' : 'LOGIN FAILED';echo Auth::guard('recruiter')-, 'password' = ? 'LOGIN OK' : 'LOGIN FAILED';echo Auth::guard('recruiter')-, 'password' = ? 'LOGIN OK' : 'LOGIN FAILED';

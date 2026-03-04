@@ -189,36 +189,12 @@
         }
 
         /* ═══ STATS BAR ═════════════════════════════════════════════════════════ */
-        .stats-bar {
-            background: var(--green);
-            padding: 1.625rem 0;
-        }
-
-        .stats-bar__inner {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 1.25rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            color: #fff;
-        }
-
-        .stat-item__num {
-            font-family: var(--font-head);
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--yellow);
-            line-height: 1;
-        }
-
-        .stat-item__lbl {
-            font-size: .77rem;
-            opacity: .82;
-            margin-top: .3rem;
-        }
+        .stats-bar { background: var(--green); padding: 1.625rem 0; }
+        .stats-bar__inner { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.25rem; }
+        .stat-item { text-align: center; color: #fff; }
+        .stat-item__icon { font-size: 1.5rem; margin-bottom: .25rem; }
+        .stat-item__num { font-family: var(--font-head); font-size: 2.2rem; font-weight: 700; color: var(--yellow); line-height: 1; }
+        .stat-item__lbl { font-size: .77rem; opacity: .82; margin-top: .3rem; }
 
         /* ═══ ABOUT ══════════════════════════════════════════════════════════════ */
         .about-grid {
@@ -334,7 +310,19 @@
             border: 1px solid var(--border-dk);
         }
 
-        /* ═══ PROGRAMS ═══════════════════════════════════════════════════════════ */
+        /* ── ABOUT ACCORDION ── */
+        .about-accordion { margin: 1.25rem 0; display: flex; flex-direction: column; gap: .5rem; }
+        .acc-item { border: 1px solid var(--border-dk); border-radius: var(--radius-lg); overflow: hidden; background: var(--white); }
+        .acc-btn { width: 100%; display: flex; align-items: center; gap: .75rem; padding: .875rem 1.125rem; background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: .92rem; font-weight: 600; color: var(--ink); text-align: left; transition: background .2s; }
+        .acc-btn:hover { background: var(--green-xlt); }
+        .acc-item.open .acc-btn { background: var(--green-lt); color: var(--green-dk); }
+        .acc-icon { font-size: 1.1rem; flex-shrink: 0; }
+        .acc-arrow { margin-left: auto; flex-shrink: 0; transition: transform .3s; color: var(--green); }
+        .acc-item.open .acc-arrow { transform: rotate(180deg); }
+        .acc-body { display: none; padding: 0 1.125rem 1rem; font-size: .9rem; color: var(--ink-3); line-height: 1.8; }
+        .acc-item.open .acc-body { display: block; }
+
+
         .programs-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -1055,29 +1043,25 @@
         <div class="c-dots" id="cDots"></div>
     </section>
 
-    {{-- ═══ STATS BAR ════════════════════════════════════════════════════════ --}}
+    {{-- ═══ STATS BAR — animated counters from DB ══════════════════════════ --}}
     <div class="stats-bar">
         <div class="wrap stats-bar__inner">
+            @forelse($stats as $stat)
             <div class="stat-item">
-                <div class="stat-item__num">150+</div>
-                <div class="stat-item__lbl">Families Supported</div>
+                <div class="stat-item__icon">{{ $stat->icon }}</div>
+                <div class="stat-item__num counter" data-target="{{ $stat->value }}" data-suffix="{{ $stat->suffix }}">0</div>
+                <div class="stat-item__lbl">{{ $stat->label }}</div>
             </div>
+            @empty
+            {{-- fallback hardcoded --}}
+            @foreach([['150','Families Supported','🏠'],[' 500','Students Reached','📚'],['50','Health-Insured Families','🏥'],['40','Women Empowered','👩‍👧'],['10','PWDs Supported','♿']] as [$n,$l,$i])
             <div class="stat-item">
-                <div class="stat-item__num">500+</div>
-                <div class="stat-item__lbl">Students Reached</div>
+                <div class="stat-item__icon">{{ $i }}</div>
+                <div class="stat-item__num">{{ $n }}+</div>
+                <div class="stat-item__lbl">{{ $l }}</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-item__num">50+</div>
-                <div class="stat-item__lbl">Health-Insured Families</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-item__num">40+</div>
-                <div class="stat-item__lbl">Women Empowered</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-item__num">10+</div>
-                <div class="stat-item__lbl">PWDs Supported</div>
-            </div>
+            @endforeach
+            @endforelse
         </div>
     </div>
 
@@ -1086,29 +1070,53 @@
         <div class="wrap">
             <div class="about-grid">
                 <div class="about-visual relative max-w-md mx-auto">
-
                     <img src="{{ asset('images/family.jpg') }}" alt="Mark Foundation Family Support"
                         class="w-full h-[400px] object-cover rounded-2xl shadow-2xl">
-
-                    <div
-                        class="about-accent-box absolute bottom-[-15px] left-[-15px] bg-green-700 text-white p-4 rounded-xl shadow-lg">
-                        ❤️
-                    </div>
-
+                    <div class="about-accent-box absolute bottom-[-15px] left-[-15px] bg-green-700 text-white p-4 rounded-xl shadow-lg">❤️</div>
                 </div>
                 <div class="about-text">
                     <div class="eyebrow" style="justify-content:flex-start;">Who We Are</div>
                     <h2>Serving the Most Vulnerable Across Tanzania</h2>
-                    <p>Mark Foundation is a registered Tanzanian NGO committed to uplifting vulnerable communities through
-                        education, healthcare, and psychosocial support. Since our inception, we have reached marginalized
-                        groups such as orphans, widows, people with disabilities, and those affected by disasters.</p>
-                    <p><strong style="color:var(--green-dk);">Mission:</strong> To empower communities in the fight against
-                        poverty, disease, and illiteracy, fostering sustainable social, economic, and cultural development.
-                    </p>
-                    <p><strong style="color:var(--green-dk);">Vision:</strong> To be a leading force in enhancing lives and
-                        creating lasting impact through humanitarian aid, education, healthcare, and community development
-                        initiatives.</p>
-                    <div class="about-motto">"Hands on progress, shaping every life."</div>
+                    <p>Mark Foundation is a registered Tanzanian NGO committed to uplifting vulnerable communities through education, healthcare, and psychosocial support. Since our inception, we have reached marginalized groups such as orphans, widows, people with disabilities, and those affected by disasters.</p>
+
+                    {{-- ── Accordion dropdowns for Mission / Vision / Motto ── --}}
+                    <div class="about-accordion">
+
+                        <div class="acc-item open">
+                            <button class="acc-btn" onclick="toggleAcc(this)">
+                                <span class="acc-icon">🎯</span>
+                                <span>Our Mission</span>
+                                <svg class="acc-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                            </button>
+                            <div class="acc-body">
+                                <p>To empower communities in the fight against poverty, disease, and illiteracy, fostering sustainable social, economic, and cultural development.</p>
+                            </div>
+                        </div>
+
+                        <div class="acc-item">
+                            <button class="acc-btn" onclick="toggleAcc(this)">
+                                <span class="acc-icon">🔭</span>
+                                <span>Our Vision</span>
+                                <svg class="acc-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                            </button>
+                            <div class="acc-body">
+                                <p>To be a leading force in enhancing lives and creating lasting impact through humanitarian aid, education, healthcare, and community development initiatives.</p>
+                            </div>
+                        </div>
+
+                        <div class="acc-item">
+                            <button class="acc-btn" onclick="toggleAcc(this)">
+                                <span class="acc-icon">💬</span>
+                                <span>Our Motto</span>
+                                <svg class="acc-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                            </button>
+                            <div class="acc-body">
+                                <p style="font-family:var(--font-head);font-style:italic;font-size:1.15rem;color:var(--green-dk);">"Hands on progress, shaping every life."</p>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <div class="values-wrap">
                         <span class="v-tag">Integrity</span>
                         <span class="v-tag">Inclusiveness</span>
@@ -1201,7 +1209,7 @@
         </div>
     </section>
 
-    {{-- ═══ TEAM ══════════════════════════════════════════════════════════════ --}}
+    {{-- ═══ TEAM — dynamic from DB ══════════════════════════════════════════ --}}
     <section class="sec" id="team">
         <div class="wrap">
             <div class="sec-title">
@@ -1210,77 +1218,30 @@
                 <p>Meet the passionate and dedicated individuals driving the vision of Mark Foundation.</p>
             </div>
             <div class="team-grid">
-
+                @forelse($teamMembers as $member)
                 <div class="team-card">
-                    <img src="{{ asset('images/ceo.jpg') }}" alt="Secilia Eliangiringa Mtei" class="team-card__photo">
+                    <div class="team-card__top team-card__top--founder">
+                        @if($member->photo)
+                            <img src="{{ Storage::url($member->photo) }}" alt="{{ $member->name }}" style="width:100%;height:100%;object-fit:cover;">
+                        @else
+                            👤
+                        @endif
+                    </div>
                     <div class="team-card__body">
-                        <p class="team-card__role">Founder &amp; CEO</p>
-                        <h3>Secilia Eliangiringa Mtei</h3>
-                        <p>A visionary educator, entrepreneur, and school founder with over a decade of experience in
-                            education, business leadership, and institutional development. Holds a Master's in Education;
-                            founder of Moriah Pre &amp; Primary School and Moriah College of Professionalism. Passionate
-                            about empowering young people through holistic education and vocational training.</p>
+                        <p class="team-card__role">{{ $member->role }}</p>
+                        <h3>{{ $member->name }}</h3>
+                        @if($member->bio)<p>{{ $member->bio }}</p>@endif
+                        @if($member->email || $member->phone)
                         <div class="team-card__contact">
-                            <span>📞 <a href="tel:+255787242434">+255 787 242 434</a></span>
-                            <span>✉ <a href="mailto:michellemtei@gmail.com">michellemtei@gmail.com</a></span>
-                            <span>📍 P.O. Box 223, Katesh, Manyara</span>
-                            <span>🌐 <a href="http://www.moriahparadise.ac.tz"
-                                    target="_blank">moriahparadise.ac.tz</a></span>
+                            @if($member->phone)<span>📞 <a href="tel:{{ $member->phone }}">{{ $member->phone }}</a></span>@endif
+                            @if($member->email)<span>✉ <a href="mailto:{{ $member->email }}">{{ $member->email }}</a></span>@endif
                         </div>
+                        @endif
                     </div>
                 </div>
-
-                <div class="team-card">
-                    <img src="{{ asset('images/ceo.jpg') }}" alt="Secilia Eliangiringa Mtei" class="team-card__photo">
-                    <div class="team-card__body">
-                        <p class="team-card__role">Founder &amp; CEO</p>
-                        <h3>Isack Timotheo</h3>
-                        <p>A trained psychologist and humanitarian leader with years of experience in psychosocial support,
-                            community outreach, and education-based interventions. Deeply passionate about mental health and
-                            community healing across Tanzania.</p>
-                    </div>
-                </div>
-
-                <div class="team-card team-card--open">
-                    <img src="{{ asset('images/ceo.jpg') }}" alt="Secilia Eliangiringa Mtei" class="team-card__photo">
-                    <div class="team-card__body">
-                        <p class="team-card__role">Programs Coordinator</p>
-                        <h3 class="open">Position Open</h3>
-                        <p>Oversees the design and execution of outreach programs, ensuring alignment with community needs.
-                            Experience in humanitarian aid delivery and psychosocial project planning required.</p>
-                    </div>
-                </div>
-
-                <div class="team-card team-card--open">
-                    <img src="{{ asset('images/ceo.jpg') }}" alt="Secilia Eliangiringa Mtei" class="team-card__photo">
-                    <div class="team-card__body">
-                        <p class="team-card__role">Finance &amp; Administration Officer</p>
-                        <h3 class="open">Position Open</h3>
-                        <p>Ensures transparency and accountability by managing budgets, reporting, and compliance across all
-                            Foundation activities.</p>
-                    </div>
-                </div>
-
-                <div class="team-card team-card--open">
-                    <img src="{{ asset('images/ceo.jpg') }}" alt="Secilia Eliangiringa Mtei" class="team-card__photo">
-                    <div class="team-card__body">
-                        <p class="team-card__role">Volunteer &amp; Community Engagement</p>
-                        <h3 class="open">Position Open</h3>
-                        <p>Recruits and trains volunteers and fosters strong ties with community leaders and stakeholders
-                            across Manyara.</p>
-                    </div>
-                </div>
-
-                <div class="team-card team-card--open">
-                    <img src="{{ asset('images/ceo.jpg') }}" alt="Secilia Eliangiringa Mtei" class="team-card__photo">
-                    <div class="team-card__body">
-                        <p class="team-card__role">M&amp;E / Communications &amp; Fundraising</p>
-                        <h3 class="open">Positions Open</h3>
-                        <p>Tracks project impact and prepares reports. Also handles donor relations, public awareness
-                            campaigns, and digital engagement to promote the mission.</p>
-                    </div>
-                </div>
-
+                @empty
+                <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--ink-3);">Team members coming soon.</div>
+                @endforelse
             </div>
             <div style="text-align:center;margin-top:2.5rem;">
                 <a href="{{ route('jobs.index') }}" class="btn btn-outline">View Open Positions →</a>
@@ -1288,7 +1249,8 @@
         </div>
     </section>
 
-    {{-- ═══ UPCOMING EVENTS (from DB) ════════════════════════════════════════ --}}
+
+        {{-- ═══ UPCOMING EVENTS (from DB) ════════════════════════════════════════ --}}
     @if ($upcomingEvents->count() > 0)
         <section class="sec sec-alt" id="events">
             <div class="wrap">
@@ -1396,7 +1358,7 @@
         </div>
     </section>
 
-    {{-- ═══ TESTIMONIALS ══════════════════════════════════════════════════════ --}}
+    {{-- ═══ TESTIMONIALS — dynamic from DB ════════════════════════════════ --}}
     <section class="sec sec-alt" id="testimonials">
         <div class="wrap">
             <div class="sec-title">
@@ -1404,21 +1366,19 @@
                 <h2>Testimonials</h2>
             </div>
             <div class="testi-grid">
+                @forelse($testimonials as $t)
                 <div class="tcard">
-                    <p>"Mark Foundation paid our health insurance when my child was sick. Today, we are safe and hopeful."
-                    </p>
-                    <div class="tcard__author">Aisha, Hanang'</div>
+                    <p>"{{ $t->quote }}"</p>
+                    <div class="tcard__author">{{ $t->author_name }}@if($t->author_location), {{ $t->author_location }}@endif</div>
                 </div>
-                <div class="tcard">
-                    <p>"The career guidance session changed my view on life. I now believe I can succeed and make a
-                        difference."</p>
-                    <div class="tcard__author">Student, Babati Secondary School</div>
-                </div>
+                @empty
+                <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--ink-3);">Testimonials coming soon.</div>
+                @endforelse
             </div>
         </div>
     </section>
 
-    {{-- ═══ FAQ ═══════════════════════════════════════════════════════════════ --}}
+    {{-- ═══ FAQ — dynamic from DB ══════════════════════════════════════════ --}}
     <section class="sec" id="faq">
         <div class="wrap">
             <div class="sec-title">
@@ -1426,15 +1386,17 @@
                 <h2>Frequently Asked Questions</h2>
             </div>
             <div class="faq-wrap">
-                @foreach ([['How can I support Mark Foundation?', 'You can donate, volunteer, or partner with us through the Get Involved section on this page. Every contribution — big or small — helps us reach more families across Tanzania.'], ['Where does Mark Foundation operate?', "Our headquarters is in Hanang', Manyara, but we reach communities across Tanzania."], ['Is my donation tax deductible?', 'Yes. We are a registered NGO and can provide official receipts for all donations. Please contact us for documentation.'], ['How can I volunteer?', 'We welcome volunteers from all backgrounds. Reach out via the Get Involved section or email us at markfoundation87@gmail.com and our team will be in touch.'], ['Do you collaborate with other organisations?', 'Yes. We work with schools, hospitals, local government, and other NGOs to amplify impact. Contact us to discuss partnership opportunities.']] as [$q, $a])
-                    <div class="faq-item">
-                        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
-                            <span>{{ $q }}</span>
-                            <span class="faq-icon">+</span>
-                        </div>
-                        <div class="faq-a">{{ $a }}</div>
+                @forelse($faqs as $faq)
+                <div class="faq-item">
+                    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                        <span>{{ $faq->question }}</span>
+                        <span class="faq-icon">+</span>
                     </div>
-                @endforeach
+                    <div class="faq-a">{{ $faq->answer }}</div>
+                </div>
+                @empty
+                <p style="text-align:center;color:var(--ink-3);">FAQs coming soon.</p>
+                @endforelse
             </div>
         </div>
     </section>
@@ -1635,5 +1597,43 @@
 
             timer = setInterval(() => go(cur + 1), 6000);
         })();
+
+        // ── ANIMATED COUNTERS ──────────────────────────────────────────────
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '+';
+            const duration = 2000;
+            const step = Math.ceil(target / (duration / 16));
+            let current = 0;
+            const timer = setInterval(() => {
+                current = Math.min(current + step, target);
+                el.textContent = current.toLocaleString() + suffix;
+                if (current >= target) clearInterval(timer);
+            }, 16);
+        }
+
+        // Trigger counters when stats bar scrolls into view
+        const counters = document.querySelectorAll('.counter');
+        if (counters.length) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            counters.forEach(c => observer.observe(c));
+        }
+
+        // ── ACCORDION (about section) ──────────────────────────────────────
+        function toggleAcc(btn) {
+            const item = btn.closest('.acc-item');
+            const isOpen = item.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.acc-item.open').forEach(i => i.classList.remove('open'));
+            // Open clicked (if wasn't open)
+            if (!isOpen) item.classList.add('open');
+        }
     </script>
 @endpush
